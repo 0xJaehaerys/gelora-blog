@@ -2,9 +2,9 @@ backend:
   name: github
   repo: 0xJaehaerys/gelora-blog
   branch: main
-  # Use GitHub authentication instead of git-gateway for simplicity
+  # GitHub OAuth will be configured in production
 
-# Publish mode  
+# Publish mode - simple for direct publishing
 publish_mode: simple
 
 # Media files
@@ -28,14 +28,13 @@ collections:
     extension: "mdx"
     format: "frontmatter"
     fields:
-      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Title", name: "title", widget: "string", hint: "SEO-friendly post title"}
       - {label: "Date", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false}
-      - {label: "Tags", name: "tags", widget: "list", default: ["ethereum"], hint: "Add relevant tags for categorization"}
-      - {label: "Summary", name: "summary", widget: "text", hint: "Brief description for SEO and preview"}
-      - {label: "Featured Image", name: "coverImage", widget: "image", required: false, hint: "Optional header image"}
-      - {label: "Author", name: "author", widget: "string", default: "Gelora Team"}
-      - {label: "Draft", name: "draft", widget: "boolean", default: false, hint: "Set to true to save as draft"}
-      - {label: "Content", name: "body", widget: "markdown", hint: "Main article content"}
+      - {label: "Tags", name: "tags", widget: "list", default: ["ethereum"], hint: "Tags: ethereum, defi, protocol, education, etc."}
+      - {label: "Summary", name: "summary", widget: "text", hint: "Brief description (appears in previews and SEO)"}
+      - {label: "Featured Image", name: "coverImage", widget: "image", required: false, hint: "Header image (recommended: 1200x630px)"}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false, hint: "Save as draft or publish immediately"}
+      - {label: "Content", name: "body", widget: "markdown", hint: "Write your article content here. Supports Markdown formatting."}
 
   - name: "authors"
     label: "Authors"
