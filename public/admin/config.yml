@@ -1,6 +1,6 @@
 backend:
-  name: test-repo
-  # For local development - change to git-gateway for production
+  name: git-gateway
+  branch: main
 
 # Publish mode
 publish_mode: editorial_workflow
@@ -14,7 +14,7 @@ site_url: https://blog.gelora.study
 display_url: https://blog.gelora.study
 
 # Logo
-logo_url: /static/images/logo.png
+logo_url: /static/images/logo-128.png
 
 # Collections
 collections:

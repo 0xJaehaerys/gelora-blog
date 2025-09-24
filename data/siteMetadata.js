@@ -8,7 +8,7 @@ const siteMetadata = {
   theme: 'dark', // system, dark or light
   siteUrl: 'https://blog.gelora.study',
   siteRepo: 'https://github.com/0xJaehaerys/gelora-blog',
-  siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
+  siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo-128.png`,
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,
   mastodon: '',
   email: 'contact@gelora.study',
