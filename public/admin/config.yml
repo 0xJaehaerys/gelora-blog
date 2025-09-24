@@ -1,8 +1,6 @@
 backend:
-  name: github
-  repo: 0xJaehaerys/gelora-blog
+  name: git-gateway
   branch: main
-  # GitHub OAuth will be configured in production
 
 # Publish mode - simple for direct publishing
 publish_mode: simple
