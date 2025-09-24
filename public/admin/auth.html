@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CMS Authentication</title>
+  <style>
+    body { font-family: 'JetBrains Mono', monospace; background: #000; color: #fff; padding: 40px; text-align: center; }
+    .success { color: #4ade80; }
+    .error { color: #ef4444; }
+  </style>
+</head>
+<body>
+  <h1>GitHub Authentication</h1>
+  <div id="status">Checking authentication...</div>
+  
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    const error = urlParams.get('error');
+    
+    if (error) {
+      document.getElementById('status').innerHTML = `<div class="error">❌ Error: ${error}</div>`;
+    } else if (code) {
+      document.getElementById('status').innerHTML = `<div class="success">✅ Authorization successful!</div><p>Redirecting to CMS...</p>`;
+      
+      // Store auth code and redirect
+      localStorage.setItem('github_auth_code', code);
+      setTimeout(() => {
+        window.location.href = '/admin/';
+      }, 2000);
+    } else {
+      document.getElementById('status').innerHTML = `<div class="error">❌ No authorization code received</div>`;
+    }
+  </script>
+</body>
+</html>

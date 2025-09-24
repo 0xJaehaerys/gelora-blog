@@ -2,9 +2,9 @@ backend:
   name: github
   repo: 0xJaehaerys/gelora-blog
   branch: main
-  # Direct GitHub integration with custom OAuth
+  # Simplified GitHub auth
   base_url: https://research.gelora.study
-  auth_endpoint: /api/oauth
+  auth_endpoint: /admin/auth.html
 
 # Publish mode - simple for direct publishing
 publish_mode: simple
