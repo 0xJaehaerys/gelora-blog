@@ -1,12 +1,10 @@
 import type { Metadata } from 'next'
-import { JetBrains_Mono } from 'next/font/google'
-import './globals.css'
 import siteMetadata from '@/data/siteMetadata'
-import Header from '@/components/Header'
+import '../css/tailwind.css'
 import SectionContainer from '@/components/SectionContainer'
+import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ThemeProviders from './theme-providers'
-import { Suspense } from 'react'
 import Script from 'next/script'
 
 const jetbrainsMono = JetBrains_Mono({
@@ -112,13 +110,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </Script>
 
         <ThemeProviders>
-          <div className="mx-auto max-w-3xl px-4 sm:px-6 xl:max-w-5xl xl:px-0">
+          <SectionContainer>
             <div className="flex h-screen flex-col justify-between font-mono">
               <Header />
               <main className="mb-auto">{children}</main>
               <Footer />
             </div>
-          </div>
+          </SectionContainer>
         </ThemeProviders>
       </body>
     </html>
