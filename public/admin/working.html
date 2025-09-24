@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Gelora Blog CMS - Working Version</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: #000;
+      color: #fff;
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #333;
+    }
+    .section {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+    }
+    .btn {
+      background: transparent;
+      border: 1px solid #666;
+      color: #fff;
+      padding: 12px 24px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      margin: 5px;
+      border-radius: 4px;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+    .btn:hover {
+      background: #333;
+      border-color: #4ade80;
+    }
+    .btn.primary {
+      background: #4ade80;
+      border-color: #4ade80;
+      color: #000;
+    }
+    .btn.primary:hover {
+      background: #22c55e;
+    }
+    .form-group {
+      margin: 15px 0;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #ccc;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      background: #333;
+      border: 1px solid #666;
+      color: #fff;
+      border-radius: 4px;
+      font-family: inherit;
+    }
+    textarea {
+      min-height: 300px;
+      resize: vertical;
+    }
+    .posts-list {
+      display: grid;
+      gap: 15px;
+    }
+    .post-item {
+      background: #2a2a2a;
+      padding: 15px;
+      border: 1px solid #444;
+      border-radius: 6px;
+    }
+    .post-title { font-weight: bold; margin-bottom: 5px; }
+    .post-meta { font-size: 0.9em; color: #888; margin-bottom: 10px; }
+    .status { padding: 10px; margin: 10px 0; border-radius: 4px; }
+    .status.success { background: #1a4a1a; border: 1px solid #4a7a4a; color: #4ade80; }
+    .status.error { background: #4a1a1a; border: 1px solid #7a4a4a; color: #ef4444; }
+    .status.info { background: #1a1a4a; border: 1px solid #4a4a7a; color: #3b82f6; }
+    .hidden { display: none; }
+    .tab-buttons { margin-bottom: 20px; }
+    .tab-button {
+      background: #333;
+      border: 1px solid #666;
+      color: #fff;
+      padding: 10px 20px;
+      cursor: pointer;
+      margin-right: 5px;
+      border-radius: 4px 4px 0 0;
+    }
+    .tab-button.active {
+      background: #4ade80;
+      color: #000;
+      border-color: #4ade80;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🚀 GELORA BLOG CMS</h1>
+      <p>Simple Content Management System</p>
+    </div>
+
+    <div class="tab-buttons">
+      <button class="tab-button active" onclick="showTab('posts')">📖 Posts</button>
+      <button class="tab-button" onclick="showTab('create')">✍️ Create Post</button>
+      <button class="tab-button" onclick="showTab('debug')">🔍 Debug</button>
+    </div>
+
+    <!-- Posts Tab -->
+    <div id="posts-tab" class="tab-content">
+      <div class="section">
+        <h2>📖 Blog Posts</h2>
+        <div id="posts-status" class="status info">Loading posts...</div>
+        <div id="posts-list" class="posts-list"></div>
+        <button class="btn" onclick="loadPosts()">🔄 Refresh Posts</button>
+      </div>
+    </div>
+
+    <!-- Create Post Tab -->
+    <div id="create-tab" class="tab-content hidden">
+      <div class="section">
+        <h2>✍️ Create New Post</h2>
+        <form id="create-form" onsubmit="createPost(event)">
+          <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required>
+          </div>
+          <div class="form-group">
+            <label for="summary">Summary:</label>
+            <input type="text" id="summary" name="summary" required>
+          </div>
+          <div class="form-group">
+            <label for="tags">Tags (comma separated):</label>
+            <input type="text" id="tags" name="tags" value="ethereum" placeholder="ethereum, defi, protocol">
+          </div>
+          <div class="form-group">
+            <label for="content">Content (Markdown):</label>
+            <textarea id="content" name="content" placeholder="Write your post content here...&#10;&#10;## Example Heading&#10;&#10;Your content goes here." required></textarea>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn primary">🚀 Publish Post</button>
+            <button type="button" class="btn" onclick="clearForm()">🗑️ Clear Form</button>
+          </div>
+        </form>
+        <div id="create-status"></div>
+      </div>
+    </div>
+
+    <!-- Debug Tab -->
+    <div id="debug-tab" class="tab-content hidden">
+      <div class="section">
+        <h2>🔍 System Debug</h2>
+        <div id="debug-results">
+          <div class="status info">Click "Run Tests" to check system status</div>
+        </div>
+        <button class="btn" onclick="runDebugTests()">🔧 Run Tests</button>
+        <button class="btn" onclick="window.open('/admin/debug.html', '_blank')">📋 Full Debug Page</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Tab Management
+    function showTab(tabName) {
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.add('hidden');
+      });
+      
+      // Remove active from all buttons
+      document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      // Show selected tab
+      document.getElementById(tabName + '-tab').classList.remove('hidden');
+      event.target.classList.add('active');
+      
+      // Load data for specific tabs
+      if (tabName === 'posts') {
+        loadPosts();
+      }
+    }
+
+    // Load Posts
+    async function loadPosts() {
+      const statusDiv = document.getElementById('posts-status');
+      const listDiv = document.getElementById('posts-list');
+      
+      statusDiv.innerHTML = '<div class="status info">Loading posts...</div>';
+      
+      try {
+        const response = await fetch('/api/posts');
+        if (response.ok) {
+          const data = await response.json();
+          const posts = data.posts || [];
+          
+          if (posts.length === 0) {
+            statusDiv.innerHTML = '<div class="status info">No posts found. Create your first post!</div>';
+            listDiv.innerHTML = '';
+            return;
+          }
+          
+          statusDiv.innerHTML = `<div class="status success">Found ${posts.length} posts</div>`;
+          
+          listDiv.innerHTML = posts.map(post => `
+            <div class="post-item">
+              <div class="post-title">${post.title}</div>
+              <div class="post-meta">
+                📅 ${post.date} | 🏷️ ${post.tags.join(', ')} | 📝 ${post.content.length} chars
+              </div>
+              <div class="post-summary">${post.summary}</div>
+            </div>
+          `).join('');
+          
+        } else {
+          statusDiv.innerHTML = `<div class="status error">Failed to load posts: ${response.status} ${response.statusText}</div>`;
+        }
+      } catch (error) {
+        statusDiv.innerHTML = `<div class="status error">Error: ${error.message}</div>`;
+      }
+    }
+
+    // Create Post
+    async function createPost(event) {
+      event.preventDefault();
+      
+      const statusDiv = document.getElementById('create-status');
+      const form = event.target;
+      const formData = new FormData(form);
+      
+      const postData = {
+        title: formData.get('title'),
+        summary: formData.get('summary'),
+        tags: formData.get('tags').split(',').map(tag => tag.trim()).filter(tag => tag),
+        content: formData.get('content'),
+        date: new Date().toISOString().split('T')[0]
+      };
+      
+      statusDiv.innerHTML = '<div class="status info">Creating post...</div>';
+      
+      try {
+        const response = await fetch('/api/posts', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(postData)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          statusDiv.innerHTML = `<div class="status success">✅ Post created successfully! File: ${result.filename}</div>`;
+          form.reset();
+          document.getElementById('tags').value = 'ethereum'; // Reset to default
+        } else {
+          statusDiv.innerHTML = `<div class="status error">❌ Failed to create post: ${result.error}</div>`;
+        }
+      } catch (error) {
+        statusDiv.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+      }
+    }
+
+    // Clear Form
+    function clearForm() {
+      document.getElementById('create-form').reset();
+      document.getElementById('tags').value = 'ethereum';
+      document.getElementById('create-status').innerHTML = '';
+    }
+
+    // Debug Tests
+    async function runDebugTests() {
+      const resultsDiv = document.getElementById('debug-results');
+      resultsDiv.innerHTML = '<div class="status info">Running tests...</div>';
+      
+      const tests = [];
+      
+      // Test API
+      try {
+        const response = await fetch('/api/test');
+        if (response.ok) {
+          const data = await response.json();
+          tests.push({
+            name: 'API Test',
+            status: 'success',
+            message: 'API working',
+            data: data
+          });
+        } else {
+          tests.push({
+            name: 'API Test',
+            status: 'error',
+            message: `API failed: ${response.status}`
+          });
+        }
+      } catch (error) {
+        tests.push({
+          name: 'API Test',
+          status: 'error',
+          message: `API error: ${error.message}`
+        });
+      }
+      
+      // Test Posts API
+      try {
+        const response = await fetch('/api/posts');
+        tests.push({
+          name: 'Posts API',
+          status: response.ok ? 'success' : 'error',
+          message: response.ok ? 'Posts API working' : `Posts API failed: ${response.status}`
+        });
+      } catch (error) {
+        tests.push({
+          name: 'Posts API',
+          status: 'error',
+          message: `Posts API error: ${error.message}`
+        });
+      }
+      
+      // Display results
+      resultsDiv.innerHTML = tests.map(test => `
+        <div class="status ${test.status}">
+          <strong>${test.name}:</strong> ${test.message}
+          ${test.data ? `<pre style="margin-top: 10px; font-size: 0.8em;">${JSON.stringify(test.data, null, 2)}</pre>` : ''}
+        </div>
+      `).join('');
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      loadPosts();
+    });
+  </script>
+</body>
+</html>
