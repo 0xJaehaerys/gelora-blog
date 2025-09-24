@@ -4,82 +4,228 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gelora Blog CMS</title>
+  
+  <!-- Decap CMS -->
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  
   <style>
-    body { 
-      font-family: 'JetBrains Mono', monospace; 
-      background: #000; 
-      color: #fff; 
+    /* Gelora Dark Theme for CMS */
+    :root {
+      --gelora-bg: #000000;
+      --gelora-secondary: #1a1a1a;
+      --gelora-border: #333333;
+      --gelora-text: #ffffff;
+      --gelora-accent: #4ade80;
+    }
+    
+    body {
+      font-family: 'JetBrains Mono', monospace !important;
+      background: var(--gelora-bg) !important;
+      color: var(--gelora-text) !important;
       margin: 0;
-      padding: 20px;
+      padding: 0;
     }
-    .loading {
-      text-align: center;
-      padding: 50px;
+    
+    /* Override CMS default styles */
+    .css-1d8z4z3-AppMainContainer,
+    [data-testid="app-main-container"] {
+      background-color: var(--gelora-bg) !important;
     }
-    .error {
-      background: #1a1a1a;
-      border: 1px solid #666;
-      padding: 20px;
+    
+    .css-1xdhyk6-SidebarContainer,
+    [data-testid="sidebar"] {
+      background-color: var(--gelora-secondary) !important;
+      border-right: 1px solid var(--gelora-border) !important;
+    }
+    
+    .css-12d2lda-WorkflowTop,
+    [data-testid="workflow-top"] {
+      background-color: var(--gelora-secondary) !important;
+      border-bottom: 1px solid var(--gelora-border) !important;
+    }
+    
+    /* Form controls */
+    .css-1s2u09g-control,
+    .css-1pahdxg-control,
+    input, textarea, select {
+      background-color: var(--gelora-secondary) !important;
+      border-color: var(--gelora-border) !important;
+      color: var(--gelora-text) !important;
+    }
+    
+    /* Buttons */
+    button {
+      font-family: 'JetBrains Mono', monospace !important;
+    }
+    
+    /* Login screen */
+    .css-1t4gx40-LoginContainer {
+      background-color: var(--gelora-bg) !important;
+    }
+    
+    /* Loading animation */
+    .gelora-loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--gelora-bg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
+    }
+    
+    .gelora-loading.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--gelora-border);
+      border-top: 3px solid var(--gelora-accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
       margin: 20px 0;
     }
-    .btn {
-      background: transparent;
-      border: 1px solid #666;
-      color: #fff;
-      padding: 10px 20px;
-      margin: 10px;
-      text-decoration: none;
-      display: inline-block;
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
-    .btn:hover {
-      background: #333;
+    
+    .terminal-text {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--gelora-accent);
+      font-size: 1.2em;
+      margin: 10px 0;
+    }
+    
+    .terminal-cursor {
+      animation: blink 1s infinite;
+    }
+    
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <div id="cms-root">
-    <div class="loading">
-      <h1>Gelora Blog CMS</h1>
-      <p>Loading content management system...</p>
-      <div id="status">Initializing...</div>
+  <!-- Loading Screen -->
+  <div id="gelora-loading" class="gelora-loading">
+    <h1 style="color: var(--gelora-accent); margin-bottom: 20px;">🚀 GELORA BLOG CMS</h1>
+    <div class="spinner"></div>
+    <div class="terminal-text">
+      $ initializing cms<span class="terminal-cursor">_</span>
+    </div>
+    <div id="loading-status" style="color: #888; margin-top: 10px; font-size: 0.9em;">
+      Starting Decap CMS...
     </div>
   </div>
 
-  <script>
-    // Simple CMS fallback
-    document.getElementById('status').innerHTML = `
-      <div class="error">
-        <h3>⚠️ CMS Initialization</h3>
-        <p>Visual CMS requires GitHub OAuth configuration.</p>
-        <p><strong>Quick Solutions:</strong></p>
-        <a href="/admin/simple.html" class="btn">📝 Use Simple File Manager</a>
-        <a href="/" class="btn">🏠 Back to Blog</a>
-        
-        <div style="margin-top: 20px; text-align: left; font-size: 0.9em;">
-          <p><strong>To activate visual CMS:</strong></p>
-          <ol>
-            <li>Add GITHUB_CLIENT_ID to Vercel environment variables</li>
-            <li>Add GITHUB_CLIENT_SECRET to Vercel environment variables</li>
-            <li>Redeploy the project</li>
-          </ol>
-        </div>
-      </div>
-    `;
+  <!-- CMS Container -->
+  <div id="nc-root"></div>
 
-    // Try to load Decap CMS if environment variables are set
+  <script>
+    // Loading status updates
+    const statusEl = document.getElementById('loading-status');
+    const loadingEl = document.getElementById('gelora-loading');
+    
+    function updateStatus(message) {
+      statusEl.textContent = message;
+      console.log('CMS:', message);
+    }
+    
+    // Initialize CMS immediately
+    updateStatus('Loading Decap CMS...');
+    
+    // Hide loading screen after CMS loads
+    let cmsCheckInterval;
+    let loadingTimeout;
+    
+    function checkCMSLoaded() {
+      // Check for CMS elements
+      const cmsElements = [
+        document.querySelector('[data-testid="app-main-container"]'),
+        document.querySelector('.nc-app-container'),
+        document.querySelector('[data-testid="login-container"]'),
+        document.querySelector('.css-1t4gx40-LoginContainer')
+      ];
+      
+      if (cmsElements.some(el => el)) {
+        updateStatus('CMS loaded successfully!');
+        setTimeout(() => {
+          loadingEl.classList.add('fade-out');
+          setTimeout(() => {
+            loadingEl.style.display = 'none';
+          }, 500);
+        }, 1000);
+        clearInterval(cmsCheckInterval);
+        clearTimeout(loadingTimeout);
+        return true;
+      }
+      return false;
+    }
+    
+    // Start checking for CMS load
+    cmsCheckInterval = setInterval(checkCMSLoaded, 500);
+    
+    // Fallback timeout
+    loadingTimeout = setTimeout(() => {
+      if (!checkCMSLoaded()) {
+        updateStatus('Ready! If you see this screen, check browser console for errors.');
+        loadingEl.classList.add('fade-out');
+        setTimeout(() => {
+          loadingEl.style.display = 'none';
+        }, 500);
+      }
+      clearInterval(cmsCheckInterval);
+    }, 10000);
+    
+    // Apply theme after CMS loads
     setTimeout(() => {
-      const script = document.createElement('script');
-      script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
-      script.onload = () => {
-        console.log('Decap CMS loaded');
-        document.getElementById('status').innerHTML = '<div style="color: #4ade80;">✅ CMS Ready! You should see the login interface above.</div>';
-      };
-      script.onerror = () => {
-        console.error('Failed to load Decap CMS');
-        document.getElementById('status').innerHTML += '<p style="color: #ef4444;">❌ Failed to load CMS. Using fallback interface.</p>';
-      };
-      document.head.appendChild(script);
-    }, 1000);
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.addedNodes.length) {
+            // Apply Gelora theme to new elements
+            const newElements = mutation.addedNodes;
+            newElements.forEach(node => {
+              if (node.nodeType === 1) { // Element node
+                const inputs = node.querySelectorAll ? node.querySelectorAll('input, textarea, select, button') : [];
+                inputs.forEach(input => {
+                  input.style.fontFamily = "'JetBrains Mono', monospace";
+                });
+              }
+            });
+          }
+        });
+      });
+      
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    }, 2000);
+    
+    // CMS Config Override (if needed)
+    window.CMS_MANUAL_INIT = true;
+    
+    // Listen for CMS events
+    window.addEventListener('load', () => {
+      updateStatus('Connecting to GitHub...');
+    });
+    
+    // Error handling
+    window.addEventListener('error', (e) => {
+      console.error('CMS Error:', e);
+      updateStatus('Error loading CMS. Check console for details.');
+    });
   </script>
 </body>
 </html>
