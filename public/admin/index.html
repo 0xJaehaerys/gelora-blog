@@ -68,19 +68,34 @@
       <h1 style="text-align: center; margin-bottom: 30px;">Gelora Blog CMS</h1>
       
       <div style="background: #1a4a1a; padding: 20px; border: 1px solid #4a7a4a; margin: 20px 0;">
-        <h3>🚀 CMS Setup Instructions</h3>
-        <p><strong>For Production (blog.gelora.study):</strong></p>
+        <h3>🚀 CMS Activation Instructions</h3>
+        <p><strong>Step 1: Create GitHub OAuth App</strong></p>
         <ol style="line-height: 1.8; margin: 15px 0;">
-          <li>Go to <strong>GitHub Settings > Developer Settings > OAuth Apps</strong></li>
-          <li>Create new OAuth App with:
-            <ul style="margin: 10px 0 10px 20px;">
-              <li>Homepage URL: <code>https://blog.gelora.study</code></li>
-              <li>Authorization callback URL: <code>https://api.netlify.com/auth/done</code></li>
+          <li>Go to: <a href="https://github.com/settings/developers" target="_blank" style="color: #4ade80;">GitHub Developer Settings</a></li>
+          <li>Click "New OAuth App"</li>
+          <li>Fill in:
+            <ul style="margin: 10px 0 10px 20px; font-family: monospace; font-size: 0.9em;">
+              <li>Application name: <code>Gelora Blog CMS</code></li>
+              <li>Homepage URL: <code>https://research.gelora.study</code></li>
+              <li>Authorization callback URL: <code>https://research.gelora.study/api/oauth</code></li>
             </ul>
           </li>
-          <li>Add Client ID to Vercel environment variables</li>
-          <li>CMS will work automatically after deployment!</li>
+          <li>Copy <strong>Client ID</strong> and <strong>Client Secret</strong></li>
         </ol>
+        
+        <p><strong>Step 2: Add to Vercel Environment Variables</strong></p>
+        <ul style="line-height: 1.8; margin: 15px 0;">
+          <li>Go to Vercel project settings</li>
+          <li>Environment Variables → Add:
+            <ul style="margin: 10px 0 10px 20px; font-family: monospace; font-size: 0.9em;">
+              <li><code>GITHUB_CLIENT_ID</code> = your_client_id</li>
+              <li><code>GITHUB_CLIENT_SECRET</code> = your_client_secret</li>
+            </ul>
+          </li>
+          <li>Redeploy project</li>
+        </ul>
+        
+        <p style="color: #4ade80;"><strong>✅ After setup: Full visual CMS will work at /admin</strong></p>
       </div>
 
       <div style="background: #1a1a1a; padding: 20px; border: 1px solid #333; margin: 20px 0;">        
