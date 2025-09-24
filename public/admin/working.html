@@ -109,10 +109,37 @@
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <h1>🚀 GELORA BLOG CMS</h1>
-      <p>Simple Content Management System</p>
+    <!-- Login Screen -->
+    <div id="login-screen" class="section">
+      <div class="header">
+        <h1>🔐 GELORA BLOG CMS</h1>
+        <p>Admin Login Required</p>
+      </div>
+      
+      <form id="login-form" onsubmit="login(event)" style="max-width: 400px; margin: 0 auto;">
+        <div class="form-group">
+          <label for="admin-password">Admin Password:</label>
+          <input type="password" id="admin-password" name="password" required placeholder="Enter admin password">
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn primary">🔓 Login</button>
+        </div>
+        <div id="login-status"></div>
+        <div style="margin-top: 20px; font-size: 0.9em; color: #888;">
+          <p><strong>Security Notice:</strong> Only authorized administrators can access this CMS.</p>
+          <p>Default password: <code>gelora2025</code> (change in Vercel env: ADMIN_PASSWORD)</p>
+        </div>
+      </form>
     </div>
+
+    <!-- Main CMS (hidden by default) -->
+    <div id="main-cms" class="hidden">
+      <div class="header">
+        <h1>🚀 GELORA BLOG CMS</h1>
+        <p>Content Management System</p>
+        <button class="btn" onclick="logout()" style="float: right;">🔒 Logout</button>
+        <div style="clear: both;"></div>
+      </div>
 
     <div class="tab-buttons">
       <button class="tab-button active" onclick="showTab('posts')">📖 Posts</button>
@@ -207,9 +234,79 @@
         <button class="btn" onclick="window.open('/admin/debug.html', '_blank')">📋 Full Debug Page</button>
       </div>
     </div>
+    </div>
   </div>
 
   <script>
+    // Authentication
+    let authToken = localStorage.getItem('gelora_admin_token');
+    
+    function login(event) {
+      event.preventDefault();
+      const password = document.getElementById('admin-password').value;
+      const statusDiv = document.getElementById('login-status');
+      
+      // For simplicity, we'll use the password as the token
+      authToken = password;
+      
+      statusDiv.innerHTML = '<div class="status info">Checking credentials...</div>';
+      
+      // Test the token by trying to fetch posts
+      testAuth().then(success => {
+        if (success) {
+          localStorage.setItem('gelora_admin_token', authToken);
+          document.getElementById('login-screen').style.display = 'none';
+          document.getElementById('main-cms').classList.remove('hidden');
+          statusDiv.innerHTML = '<div class="status success">✅ Login successful!</div>';
+          loadPosts();
+        } else {
+          statusDiv.innerHTML = '<div class="status error">❌ Invalid password. Access denied.</div>';
+          authToken = null;
+        }
+      });
+    }
+    
+    function logout() {
+      authToken = null;
+      localStorage.removeItem('gelora_admin_token');
+      document.getElementById('login-screen').style.display = 'block';
+      document.getElementById('main-cms').classList.add('hidden');
+      document.getElementById('admin-password').value = '';
+    }
+    
+    async function testAuth() {
+      try {
+        const response = await fetch('/api/posts', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            title: 'test',
+            content: 'test'
+          })
+        });
+        
+        // If we get 401, auth failed. If we get 400 (validation error), auth worked
+        return response.status !== 401;
+      } catch (error) {
+        return false;
+      }
+    }
+    
+    // Check if already logged in
+    if (authToken) {
+      testAuth().then(success => {
+        if (success) {
+          document.getElementById('login-screen').style.display = 'none';
+          document.getElementById('main-cms').classList.remove('hidden');
+        } else {
+          logout();
+        }
+      });
+    }
+
     // Tab Management
     function showTab(tabName) {
       // Hide all tabs
@@ -298,6 +395,7 @@
         const response = await fetch('/api/posts', {
           method: 'POST',
           headers: {
+            'Authorization': `Bearer ${authToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(postData)
@@ -427,6 +525,7 @@
         const response = await fetch('/api/posts', {
           method: 'PUT',
           headers: {
+            'Authorization': `Bearer ${authToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(postData)

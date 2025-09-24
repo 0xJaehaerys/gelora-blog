@@ -15,6 +15,14 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  // Basic security check
+  const authHeader = request.headers.get('authorization')
+  const adminPassword = process.env.ADMIN_PASSWORD || 'gelora2025'
+
+  if (!authHeader || authHeader !== `Bearer ${adminPassword}`) {
+    return NextResponse.json({ error: 'Unauthorized. Admin access required.' }, { status: 401 })
+  }
+
   try {
     const postData = await request.json()
     console.log('Creating post:', postData)
@@ -87,6 +95,13 @@ export async function PUT(request: NextRequest) {
   try {
     const postData = await request.json()
     const { originalFilename, ...updatedData } = postData
+    // Basic security check
+    const authHeader = request.headers.get('authorization')
+    const adminPassword = process.env.ADMIN_PASSWORD || 'gelora2025'
+
+    if (!authHeader || authHeader !== `Bearer ${adminPassword}`) {
+      return NextResponse.json({ error: 'Unauthorized. Admin access required.' }, { status: 401 })
+    }
 
     console.log('Updating post:', originalFilename, updatedData)
 
