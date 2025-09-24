@@ -3,21 +3,31 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gelora Blog Admin</title>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <meta name="robots" content="noindex" />
+  <title>Gelora Blog CMS</title>
+  <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
+  <style>
+    body { 
+      font-family: 'JetBrains Mono', monospace !important; 
+      background: #000 !important; 
+      color: #fff !important; 
+    }
+    /* Override CMS styles */
+    .css-1d8z4z3-AppMainContainer { background: #000 !important; }
+    .css-1xdhyk6-SidebarContainer { background: #1a1a1a !important; }
+  </style>
 </head>
 <body>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   <script>
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", user => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
-        }
-      });
-    }
+    console.log('Gelora Blog CMS Loading...');
+    
+    // Check if we have GitHub auth
+    window.addEventListener('message', function(event) {
+      if (event.data.type === 'authorization_github') {
+        console.log('GitHub authorization received');
+      }
+    });
   </script>
 </body>
 </html>
