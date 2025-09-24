@@ -4,37 +4,42 @@
 @source '../node_modules/pliny';
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Core theme configuration */
+/* Gelora theme configuration */
 @theme {
-  /* Font families */
-  --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  /* Font families - matching main Gelora site */
+  --font-sans: 'JetBrains Mono', 'Space Mono', ui-monospace, monospace;
+  --font-mono: 'JetBrains Mono', 'Space Mono', ui-monospace, monospace;
 
-  /* Colors */
-  /* Copied from https://tailwindcss.com/docs/theme#default-theme-variable-reference */
-  --color-primary-50: oklch(0.971 0.014 343.198);
-  --color-primary-100: oklch(0.948 0.028 342.258);
-  --color-primary-200: oklch(0.899 0.061 343.231);
-  --color-primary-300: oklch(0.823 0.12 346.018);
-  --color-primary-400: oklch(0.718 0.202 349.761);
-  --color-primary-500: oklch(0.656 0.241 354.308);
-  --color-primary-600: oklch(0.592 0.249 0.584);
-  --color-primary-700: oklch(0.525 0.223 3.958);
-  --color-primary-800: oklch(0.459 0.187 3.815);
-  --color-primary-900: oklch(0.408 0.153 2.432);
-  --color-primary-950: oklch(0.284 0.109 3.907);
+  /* Gelora Color Scheme - monochrome with high contrast */
+  --color-primary-50: #f9f9f9; /* Very light gray */
+  --color-primary-100: #e0e0e0; /* Light gray */
+  --color-primary-200: #cccccc; /* Medium light gray */
+  --color-primary-300: #aaaaaa; /* Medium gray */
+  --color-primary-400: #888888; /* Medium dark gray */
+  --color-primary-500: #666666; /* Dark gray */
+  --color-primary-600: #4a4a4a; /* Darker gray */
+  --color-primary-700: #3a3a3a; /* Very dark gray */
+  --color-primary-800: #2a2a2a; /* Almost black */
+  --color-primary-900: #1a1a1a; /* Dark black */
+  --color-primary-950: #000000; /* Pure black */
 
-  --color-gray-50: oklch(0.985 0.002 247.839);
-  --color-gray-100: oklch(0.967 0.003 264.542);
-  --color-gray-200: oklch(0.928 0.006 264.531);
-  --color-gray-300: oklch(0.872 0.01 258.338);
-  --color-gray-400: oklch(0.707 0.022 261.325);
-  --color-gray-500: oklch(0.551 0.027 264.364);
-  --color-gray-600: oklch(0.446 0.03 256.802);
-  --color-gray-700: oklch(0.373 0.034 259.733);
-  --color-gray-800: oklch(0.278 0.033 256.848);
-  --color-gray-900: oklch(0.21 0.034 264.665);
-  --color-gray-950: oklch(0.13 0.028 261.692);
+  /* Gelora Gray Scale */
+  --color-gray-50: #ffffff; /* Pure white */
+  --color-gray-100: #f9f9f9; /* Off white */
+  --color-gray-200: #e0e0e0; /* Light gray */
+  --color-gray-300: #cccccc; /* Medium light */
+  --color-gray-400: #aaaaaa; /* Medium */
+  --color-gray-500: #888888; /* Medium dark */
+  --color-gray-600: #666666; /* Dark */
+  --color-gray-700: #4a4a4a; /* Darker */
+  --color-gray-800: #2a2a2a; /* Very dark */
+  --color-gray-900: #1a1a1a; /* Almost black */
+  --color-gray-950: #000000; /* Pure black */
+
+  /* Custom Gelora variables */
+  --gelora-white: #ffffff;
+  --gelora-black: #000000;
+  --gelora-border: rgba(255, 255, 255, 0.1);
 
   /* Line heights */
   --line-height-11: 2.75rem;
@@ -172,4 +177,110 @@ input:-webkit-autofill:focus {
 .linkicon {
   display: inline-block;
   vertical-align: middle;
+}
+
+/* Gelora Terminal Styles */
+.terminal-title {
+  font-family: var(--font-mono);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  animation: fadeInUp 0.8s ease-out;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+.terminal-line {
+  display: block;
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
+  animation-delay: 0.3s;
+}
+
+.terminal-prompt {
+  color: var(--color-gray-500);
+  font-family: var(--font-mono);
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 10px;
+  height: 1.2em;
+  background-color: var(--color-gray-50);
+  animation: blink 1s infinite;
+  margin-left: 2px;
+  vertical-align: middle;
+}
+
+.terminal-text {
+  color: var(--color-gray-50);
+  font-family: var(--font-mono);
+}
+
+/* Gelora Custom Components */
+.gelora-card {
+  background: var(--color-gray-950);
+  border: 1px solid var(--color-gray-800);
+  transition: all 0.3s ease;
+}
+
+.gelora-card:hover {
+  border-color: var(--color-gray-600);
+  transform: translateY(-2px);
+}
+
+.gelora-button {
+  background: transparent;
+  border: 1px solid var(--color-gray-600);
+  color: var(--color-gray-200);
+  padding: 0.5rem 1rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+}
+
+.gelora-button:hover {
+  background: var(--color-gray-50);
+  color: var(--color-gray-950);
+  border-color: var(--color-gray-50);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Typography */
+.gelora-mono {
+  font-family: var(--font-mono);
+}
+
+/* Dark theme overrides */
+:root {
+  color-scheme: dark;
+}
+
+html {
+  background-color: var(--color-gray-950);
+  color: var(--color-gray-100);
 }

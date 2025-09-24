@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Gelora Blog - Post Manager</title>
+  <style>
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: #000;
+      color: #fff;
+      padding: 20px;
+      line-height: 1.6;
+      margin: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: #fff;
+      border-bottom: 1px solid #333;
+      padding-bottom: 10px;
+      text-align: center;
+    }
+    .section {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+    .file-item {
+      padding: 10px;
+      border-bottom: 1px solid #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .file-item:last-child {
+      border-bottom: none;
+    }
+    .btn {
+      background: transparent;
+      border: 1px solid #666;
+      color: #fff;
+      padding: 8px 15px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      margin: 5px;
+      border-radius: 3px;
+    }
+    .btn:hover {
+      background: #333;
+      border-color: #fff;
+    }
+    input, textarea {
+      background: #000;
+      border: 1px solid #666;
+      color: #fff;
+      padding: 10px;
+      width: 100%;
+      margin: 10px 0;
+      font-family: 'JetBrains Mono', monospace;
+      border-radius: 3px;
+    }
+    code {
+      background: #2a2a2a;
+      padding: 2px 5px;
+      border-radius: 3px;
+      color: #ccc;
+    }
+    .terminal-prompt::before {
+      content: '$ ';
+      color: #888;
+    }
+    .instructions {
+      background: #0a0a0a;
+      border-left: 3px solid #666;
+      padding: 15px;
+      margin: 15px 0;
+    }
+    .status {
+      background: #1a4a1a;
+      border: 1px solid #4a7a4a;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="terminal-prompt">Gelora Blog - Post Manager</h1>
+    
+    <div class="status">
+      ✅ Blog is running on <strong>http://localhost:3001</strong><br>
+      ✅ Admin accessible at <strong>http://localhost:3001/admin</strong>
+    </div>
+
+    <div class="section">
+      <h3>📄 Current Posts</h3>
+      <div class="file-item">
+        <span>📝 welcome-to-gelora-blog.mdx</span>
+        <span>
+          <a href="/" target="_blank" class="btn">View Live</a>
+          <span style="color: #888;">Ready to edit</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>🚀 Quick Actions</h3>
+      <div style="text-align: center;">
+        <a href="/" target="_blank" class="btn">📖 View Blog</a>
+        <a href="/blog" target="_blank" class="btn">📚 All Posts</a>
+        <a href="/admin/index.html" class="btn">🎛️ Try Decap CMS</a>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>✍️ How to Create New Posts</h3>
+      
+      <div class="instructions">
+        <strong>Method 1: Direct File Creation</strong><br>
+        1. Open <code>data/blog/</code> folder<br>
+        2. Create new file: <code>2025-09-24-your-post-name.mdx</code><br>
+        3. Copy template below and modify<br>
+        4. Save file → blog updates automatically!
+      </div>
+
+      <h4>📋 Post Template:</h4>
+      <textarea rows="20" readonly>---
+title: 'Your Amazing Post Title'
+date: '2025-09-24'
+tags: ['ethereum', 'defi', 'blockchain']
+draft: false
+summary: 'Brief description that appears in post previews and SEO'
+author: Gelora Team
+---
+
+# Your Amazing Post Title
+
+Write your introduction here. This is where you hook the reader!
+
+## What is [Topic]?
+
+Explain the main concept in simple terms.
+
+### Key Points:
+- Point 1: Important insight
+- Point 2: Another crucial detail  
+- Point 3: Final key takeaway
+
+## Technical Deep Dive
+
+For more technical content:
+
+```javascript
+// Code example
+function calculateStaking(amount) {
+  return amount * 0.05; // 5% APY
+}
+```
+
+### Ethereum Integration
+
+When discussing Ethereum:
+- Always provide context
+- Link to official docs when possible
+- Use real examples
+
+## Visual Content
+
+Add images like this:
+![Description](/static/images/your-image.jpg)
+
+## Conclusion
+
+Wrap up your thoughts and provide next steps for readers.
+
+---
+
+**Want to learn more?** Check out our [previous post](/blog/welcome-to-gelora-blog) or explore the [Ethereum documentation](https://ethereum.org).
+</textarea>
+
+      <div class="instructions">
+        <strong>Pro Tips:</strong><br>
+        • Use descriptive filenames: <code>2025-09-24-ethereum-scaling-solutions.mdx</code><br>
+        • Add relevant tags for better categorization<br>
+        • Write compelling summaries for SEO<br>
+        • Images go in <code>public/static/images/</code><br>
+        • Hot reload works - save and see changes instantly!
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>🎨 Styling Tips</h3>
+      <p>Your blog uses Gelora's terminal aesthetic:</p>
+      <ul>
+        <li><strong>Monospace fonts</strong> - JetBrains Mono everywhere</li>
+        <li><strong>Dark theme</strong> - Black backgrounds, white text</li>
+        <li><strong>Minimal design</strong> - Focus on content</li>
+        <li><strong>Terminal prompts</strong> - $ symbols and cursors</li>
+      </ul>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px; padding: 20px;">
+      <a href="/admin" class="btn">← Admin Dashboard</a>
+      <a href="/" class="btn">🏠 Back to Blog</a>
+    </div>
+  </div>
+
+  <script>
+    // Simple status check
+    console.log('Gelora Blog Admin - Simple Manager Loaded');
+    
+    // Update timestamp
+    document.addEventListener('DOMContentLoaded', function() {
+      const now = new Date().toLocaleString();
+      console.log('Current time:', now);
+    });
+  </script>
+</body>
+</html>

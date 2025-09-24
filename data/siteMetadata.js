@@ -1,19 +1,19 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'Next.js Starter Blog',
-  author: 'Tails Azimuth',
-  headerTitle: 'TailwindBlog',
-  description: 'A blog created with Next.js and Tailwind.css',
+  title: 'Gelora Blog | Ethereum Educational Project',
+  author: 'Gelora Team',
+  headerTitle: 'GELORA_BLOG',
+  description: 'Deep insights into Ethereum technology, protocol updates, and educational content.',
   language: 'en-us',
-  theme: 'system', // system, dark or light
-  siteUrl: 'https://tailwind-nextjs-starter-blog.vercel.app',
-  siteRepo: 'https://github.com/timlrx/tailwind-nextjs-starter-blog',
+  theme: 'dark', // system, dark or light
+  siteUrl: 'https://blog.gelora.study',
+  siteRepo: 'https://github.com/0xJaehaerys/gelora-blog',
   siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,
-  mastodon: 'https://mastodon.social/@mastodonuser',
-  email: 'address@yoursite.com',
-  github: 'https://github.com',
-  x: 'https://twitter.com/x',
+  mastodon: '',
+  email: 'contact@gelora.study',
+  github: 'https://github.com/0xJaehaerys',
+  x: 'https://twitter.com/gelora_study',
   // twitter: 'https://twitter.com/Twitter',
   facebook: 'https://facebook.com',
   youtube: 'https://youtube.com',
@@ -50,9 +50,8 @@ const siteMetadata = {
     // },
   },
   newsletter: {
-    // supports mailchimp, buttondown, convertkit, klaviyo, revue, emailoctopus, beehive
-    // Please add your .env file and modify it according to your selection
-    provider: 'buttondown',
+    // Newsletter disabled for Gelora Blog
+    provider: '',
   },
   comments: {
     // If you want to use an analytics provider you have to add it to the

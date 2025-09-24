@@ -1,0 +1,60 @@
+backend:
+  name: test-repo
+  # For local development - change to git-gateway for production
+
+# Publish mode
+publish_mode: editorial_workflow
+
+# Media files
+media_folder: "public/static/images"
+public_folder: "/static/images"
+
+# Site URL
+site_url: https://blog.gelora.study
+display_url: https://blog.gelora.study
+
+# Logo
+logo_url: /static/images/logo.png
+
+# Collections
+collections:
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "data/blog"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    extension: "mdx"
+    format: "frontmatter"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false}
+      - {label: "Tags", name: "tags", widget: "list", default: ["ethereum"], hint: "Add relevant tags for categorization"}
+      - {label: "Summary", name: "summary", widget: "text", hint: "Brief description for SEO and preview"}
+      - {label: "Featured Image", name: "coverImage", widget: "image", required: false, hint: "Optional header image"}
+      - {label: "Author", name: "author", widget: "string", default: "Gelora Team"}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false, hint: "Set to true to save as draft"}
+      - {label: "Content", name: "body", widget: "markdown", hint: "Main article content"}
+
+  - name: "authors"
+    label: "Authors"
+    folder: "data/authors"
+    create: true
+    slug: "{{slug}}"
+    extension: "mdx"
+    fields:
+      - {label: "Name", name: "name", widget: "string"}
+      - {label: "Avatar", name: "avatar", widget: "image"}
+      - {label: "Bio", name: "bio", widget: "text"}
+      - {label: "Twitter", name: "twitter", widget: "string", required: false}
+      - {label: "LinkedIn", name: "linkedin", widget: "string", required: false}
+      - {label: "GitHub", name: "github", widget: "string", required: false}
+
+# Editor preview
+editor:
+  preview: true
+
+# Slug configuration
+slug:
+  encoding: "ascii"
+  clean_accents: true
+  sanitize_replacement: "-"

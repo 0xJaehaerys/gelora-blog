@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gelora Blog Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Gelora Admin Theme */
+    body {
+      font-family: 'JetBrains Mono', monospace !important;
+      background-color: #000000 !important;
+      color: #ffffff !important;
+    }
+    
+    /* Override CMS styles */
+    .css-1d8z4z3-AppMainContainer {
+      background-color: #000000 !important;
+    }
+    
+    .css-1xdhyk6-SidebarContainer {
+      background-color: #1a1a1a !important;
+      border-right: 1px solid #333333 !important;
+    }
+    
+    .css-12d2lda-WorkflowTop {
+      background-color: #1a1a1a !important;
+      border-bottom: 1px solid #333333 !important;
+    }
+    
+    /* Gelora branding colors */
+    .css-1s2u09g-control,
+    .css-1pahdxg-control {
+      background-color: #1a1a1a !important;
+      border-color: #333333 !important;
+      color: #ffffff !important;
+    }
+    
+    /* Loading screen */
+    .loading-screen {
+      background-color: #000000;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    
+    .terminal-prompt::before {
+      content: '$ ';
+      color: #888888;
+    }
+    
+    .cursor {
+      animation: blink 1s infinite;
+    }
+    
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div id="nc-root" class="loading-screen">
+    <div>
+      <div class="terminal-prompt">Loading Gelora Blog Admin<span class="cursor">█</span></div>
+    </div>
+  </div>
+  
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Gelora Blog - File Manager</title>
+  <style>
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: #000;
+      color: #fff;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: #fff;
+      border-bottom: 1px solid #333;
+      padding-bottom: 10px;
+    }
+    .file-list {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .file-item {
+      padding: 10px;
+      border-bottom: 1px solid #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .btn {
+      background: transparent;
+      border: 1px solid #666;
+      color: #fff;
+      padding: 5px 10px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn:hover {
+      background: #333;
+    }
+    .create-form {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    input, textarea {
+      background: #000;
+      border: 1px solid #666;
+      color: #fff;
+      padding: 10px;
+      width: 100%;
+      margin: 10px 0;
+      font-family: inherit;
+    }
+    .terminal-prompt::before {
+      content: '$ ';
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="terminal-prompt">Gelora Blog - Post Manager</h1>
+    
+    <div class="file-list">
+      <h3>Existing Posts</h3>
+      <div class="file-item">
+        <span>📄 welcome-to-gelora-blog.mdx</span>
+        <a href="#" class="btn">Edit</a>
+      </div>
+    </div>
+
+    <div class="create-form">
+      <h3>Create New Post</h3>
+      <p>For now, create posts manually in <code>data/blog/</code> folder with this format:</p>
+      <textarea rows="15" readonly>---
+title: 'Your Post Title'
+date: '2025-09-24'
+tags: ['ethereum', 'topic']
+draft: false
+summary: 'Brief description of your post'
+author: Gelora Team
+---
+
+# Your Post Title
+
+Your content here in Markdown format...
+
+## Subheading
+
+- List item 1
+- List item 2
+
+```javascript
+// Code example
+console.log('Hello Ethereum!');
+```
+</textarea>
+      
+      <p style="margin-top: 20px;">
+        <strong>Instructions:</strong><br>
+        1. Create new .mdx file in <code>data/blog/</code><br>
+        2. Use format: <code>YYYY-MM-DD-post-name.mdx</code><br>
+        3. Save and refresh blog to see changes<br>
+        4. For images, place in <code>public/static/images/</code>
+      </p>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px;">
+      <a href="/" class="btn">← Back to Blog</a>
+      <a href="/admin" class="btn">Admin Dashboard</a>
+    </div>
+  </div>
+</body>
+</html>

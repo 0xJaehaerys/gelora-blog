@@ -2,21 +2,29 @@ import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from 'pliny/utils/formatDate'
-import NewsletterForm from 'pliny/ui/NewsletterForm'
 
 const MAX_DISPLAY = 5
 
 export default function Home({ posts }) {
   return (
     <>
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-          <h1 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 dark:text-gray-100">
-            Latest
+      <div className="divide-y divide-gray-800">
+        {/* Hero Section - Terminal Style */}
+        <div className="space-y-6 pt-12 pb-16 md:space-y-8">
+          <div className="terminal-title gelora-mono">
+            <span className="terminal-prompt">$</span> cat /dev/ethereum | grep insights
+          </div>
+          <h1 className="gelora-mono text-4xl leading-tight font-bold tracking-tight text-gray-100 sm:text-5xl md:text-6xl">
+            GELORA_BLOG
           </h1>
-          <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
+          <p className="gelora-mono max-w-3xl text-xl leading-relaxed text-gray-400">
             {siteMetadata.description}
           </p>
+          <div className="terminal-line gelora-mono text-gray-500">
+            <span className="terminal-prompt">&gt;</span> Ethereum deep dives, protocol analysis,
+            educational content
+            <span className="terminal-cursor"></span>
+          </div>
         </div>
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
           {!posts.length && 'No posts found.'}
@@ -79,11 +87,6 @@ export default function Home({ posts }) {
           >
             All Posts &rarr;
           </Link>
-        </div>
-      )}
-      {siteMetadata.newsletter?.provider && (
-        <div className="flex items-center justify-center pt-4">
-          <NewsletterForm />
         </div>
       )}
     </>

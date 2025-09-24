@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gelora Blog Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Gelora Admin Theme */
+    body {
+      font-family: 'JetBrains Mono', monospace !important;
+      background-color: #000000 !important;
+      color: #ffffff !important;
+    }
+    
+    /* Override CMS styles */
+    .css-1d8z4z3-AppMainContainer {
+      background-color: #000000 !important;
+    }
+    
+    .css-1xdhyk6-SidebarContainer {
+      background-color: #1a1a1a !important;
+      border-right: 1px solid #333333 !important;
+    }
+    
+    .css-12d2lda-WorkflowTop {
+      background-color: #1a1a1a !important;
+      border-bottom: 1px solid #333333 !important;
+    }
+    
+    /* Gelora branding colors */
+    .css-1s2u09g-control,
+    .css-1pahdxg-control {
+      background-color: #1a1a1a !important;
+      border-color: #333333 !important;
+      color: #ffffff !important;
+    }
+    
+    /* Loading screen */
+    .loading-screen {
+      background-color: #000000;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    
+    .terminal-prompt::before {
+      content: '$ ';
+      color: #888888;
+    }
+    
+    .cursor {
+      animation: blink 1s infinite;
+    }
+    
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div id="nc-root">
+    <div class="container" style="max-width: 800px; margin: 50px auto; padding: 20px;">
+      <h1 style="text-align: center; margin-bottom: 30px;">Gelora Blog CMS</h1>
+      
+      <div style="background: #1a1a1a; padding: 20px; border: 1px solid #333; margin: 20px 0;">
+        <h3>❌ CMS Not Available Locally</h3>
+        <p>Decap CMS requires GitHub authentication which isn't configured for local development.</p>
+        
+        <h3>✅ Available Options:</h3>
+        <div style="margin: 20px 0;">
+          <a href="/admin/simple.html" style="display: inline-block; background: transparent; border: 1px solid #666; color: #fff; padding: 10px 20px; margin: 10px; text-decoration: none;">
+            📝 Simple File Manager
+          </a>
+          <a href="/" style="display: inline-block; background: transparent; border: 1px solid #666; color: #fff; padding: 10px 20px; margin: 10px; text-decoration: none;">
+            🏠 View Blog
+          </a>
+        </div>
+      </div>
+
+      <div style="background: #0a0a0a; padding: 20px; border-left: 3px solid #666; margin: 20px 0;">
+        <h4>🚀 Quick Start Guide:</h4>
+        <ol style="line-height: 1.8;">
+          <li>Use <strong>Simple File Manager</strong> for easy post creation</li>
+          <li>Create files in <code>data/blog/</code> folder</li>
+          <li>Use format: <code>YYYY-MM-DD-post-name.mdx</code></li>
+          <li>Copy templates from Simple File Manager</li>
+          <li>Save and refresh blog to see changes</li>
+        </ol>
+        
+        <p><strong>For Production:</strong> When deployed to Vercel, this CMS will work with GitHub authentication.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
