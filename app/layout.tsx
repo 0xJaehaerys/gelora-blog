@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { JetBrains_Mono } from 'next/font/google'
 import siteMetadata from '@/data/siteMetadata'
 import '../css/tailwind.css'
 import SectionContainer from '@/components/SectionContainer'
