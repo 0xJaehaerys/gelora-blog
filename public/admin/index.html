@@ -67,11 +67,24 @@
     <div class="container" style="max-width: 800px; margin: 50px auto; padding: 20px;">
       <h1 style="text-align: center; margin-bottom: 30px;">Gelora Blog CMS</h1>
       
-      <div style="background: #1a1a1a; padding: 20px; border: 1px solid #333; margin: 20px 0;">
-        <h3>❌ CMS Not Available Locally</h3>
-        <p>Decap CMS requires GitHub authentication which isn't configured for local development.</p>
-        
-        <h3>✅ Available Options:</h3>
+      <div style="background: #1a4a1a; padding: 20px; border: 1px solid #4a7a4a; margin: 20px 0;">
+        <h3>🚀 CMS Setup Instructions</h3>
+        <p><strong>For Production (blog.gelora.study):</strong></p>
+        <ol style="line-height: 1.8; margin: 15px 0;">
+          <li>Go to <strong>GitHub Settings > Developer Settings > OAuth Apps</strong></li>
+          <li>Create new OAuth App with:
+            <ul style="margin: 10px 0 10px 20px;">
+              <li>Homepage URL: <code>https://blog.gelora.study</code></li>
+              <li>Authorization callback URL: <code>https://api.netlify.com/auth/done</code></li>
+            </ul>
+          </li>
+          <li>Add Client ID to Vercel environment variables</li>
+          <li>CMS will work automatically after deployment!</li>
+        </ol>
+      </div>
+
+      <div style="background: #1a1a1a; padding: 20px; border: 1px solid #333; margin: 20px 0;">        
+        <h3>📝 For Local Development:</h3>
         <div style="margin: 20px 0;">
           <a href="/admin/simple.html" style="display: inline-block; background: transparent; border: 1px solid #666; color: #fff; padding: 10px 20px; margin: 10px; text-decoration: none;">
             📝 Simple File Manager

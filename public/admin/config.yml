@@ -1,9 +1,11 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: 0xJaehaerys/gelora-blog
   branch: main
+  # Use GitHub authentication instead of git-gateway for simplicity
 
-# Publish mode
-publish_mode: editorial_workflow
+# Publish mode  
+publish_mode: simple
 
 # Media files
 media_folder: "public/static/images"
