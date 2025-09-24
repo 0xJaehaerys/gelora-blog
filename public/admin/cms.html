@@ -3,31 +3,83 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex" />
   <title>Gelora Blog CMS</title>
-  <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
   <style>
     body { 
-      font-family: 'JetBrains Mono', monospace !important; 
-      background: #000 !important; 
-      color: #fff !important; 
+      font-family: 'JetBrains Mono', monospace; 
+      background: #000; 
+      color: #fff; 
+      margin: 0;
+      padding: 20px;
     }
-    /* Override CMS styles */
-    .css-1d8z4z3-AppMainContainer { background: #000 !important; }
-    .css-1xdhyk6-SidebarContainer { background: #1a1a1a !important; }
+    .loading {
+      text-align: center;
+      padding: 50px;
+    }
+    .error {
+      background: #1a1a1a;
+      border: 1px solid #666;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .btn {
+      background: transparent;
+      border: 1px solid #666;
+      color: #fff;
+      padding: 10px 20px;
+      margin: 10px;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn:hover {
+      background: #333;
+    }
   </style>
 </head>
 <body>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <div id="cms-root">
+    <div class="loading">
+      <h1>Gelora Blog CMS</h1>
+      <p>Loading content management system...</p>
+      <div id="status">Initializing...</div>
+    </div>
+  </div>
+
   <script>
-    console.log('Gelora Blog CMS Loading...');
-    
-    // Check if we have GitHub auth
-    window.addEventListener('message', function(event) {
-      if (event.data.type === 'authorization_github') {
-        console.log('GitHub authorization received');
-      }
-    });
+    // Simple CMS fallback
+    document.getElementById('status').innerHTML = `
+      <div class="error">
+        <h3>⚠️ CMS Initialization</h3>
+        <p>Visual CMS requires GitHub OAuth configuration.</p>
+        <p><strong>Quick Solutions:</strong></p>
+        <a href="/admin/simple.html" class="btn">📝 Use Simple File Manager</a>
+        <a href="/" class="btn">🏠 Back to Blog</a>
+        
+        <div style="margin-top: 20px; text-align: left; font-size: 0.9em;">
+          <p><strong>To activate visual CMS:</strong></p>
+          <ol>
+            <li>Add GITHUB_CLIENT_ID to Vercel environment variables</li>
+            <li>Add GITHUB_CLIENT_SECRET to Vercel environment variables</li>
+            <li>Redeploy the project</li>
+          </ol>
+        </div>
+      </div>
+    `;
+
+    // Try to load Decap CMS if environment variables are set
+    setTimeout(() => {
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
+      script.onload = () => {
+        console.log('Decap CMS loaded');
+        document.getElementById('status').innerHTML = '<div style="color: #4ade80;">✅ CMS Ready! You should see the login interface above.</div>';
+      };
+      script.onerror = () => {
+        console.error('Failed to load Decap CMS');
+        document.getElementById('status').innerHTML += '<p style="color: #ef4444;">❌ Failed to load CMS. Using fallback interface.</p>';
+      };
+      document.head.appendChild(script);
+    }, 1000);
   </script>
 </body>
 </html>
