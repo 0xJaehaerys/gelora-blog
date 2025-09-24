@@ -1,6 +1,10 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: 0xJaehaerys/gelora-blog
   branch: main
+  # Direct GitHub integration with custom OAuth
+  base_url: https://research.gelora.study
+  auth_endpoint: /api/oauth
 
 # Publish mode - simple for direct publishing
 publish_mode: simple
