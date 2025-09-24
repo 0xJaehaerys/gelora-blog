@@ -64,6 +64,14 @@
 </head>
 <body>
   <div id="nc-root">
+    <script>
+      // Redirect to actual CMS if OAuth is configured
+      if (window.location.search.includes('cms=true') || 
+          document.referrer === '' || 
+          !window.location.search.includes('setup=true')) {
+        window.location.href = '/admin/cms.html';
+      }
+    </script>
     <div class="container" style="max-width: 800px; margin: 50px auto; padding: 20px;">
       <h1 style="text-align: center; margin-bottom: 30px;">Gelora Blog CMS</h1>
       

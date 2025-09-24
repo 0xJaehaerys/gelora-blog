@@ -2,9 +2,9 @@ backend:
   name: github
   repo: 0xJaehaerys/gelora-blog
   branch: main
-  # Simplified GitHub auth
+  # GitHub OAuth
   base_url: https://research.gelora.study
-  auth_endpoint: /admin/auth.html
+  auth_endpoint: /api/oauth
 
 # Publish mode - simple for direct publishing
 publish_mode: simple
@@ -14,8 +14,8 @@ media_folder: "public/static/images"
 public_folder: "/static/images"
 
 # Site URL
-site_url: https://blog.gelora.study
-display_url: https://blog.gelora.study
+site_url: https://research.gelora.study
+display_url: https://research.gelora.study
 
 # Logo
 logo_url: /static/images/logo-128.png
