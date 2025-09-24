@@ -117,6 +117,7 @@
     <div class="tab-buttons">
       <button class="tab-button active" onclick="showTab('posts')">📖 Posts</button>
       <button class="tab-button" onclick="showTab('create')">✍️ Create Post</button>
+      <button class="tab-button" onclick="showTab('edit')" id="edit-tab-button" style="display: none;">✏️ Edit Post</button>
       <button class="tab-button" onclick="showTab('debug')">🔍 Debug</button>
     </div>
 
@@ -157,6 +158,41 @@
           </div>
         </form>
         <div id="create-status"></div>
+      </div>
+    </div>
+
+    <!-- Edit Post Tab -->
+    <div id="edit-tab" class="tab-content hidden">
+      <div class="section">
+        <h2>✏️ Edit Post</h2>
+        <form id="edit-form" onsubmit="updatePost(event)">
+          <input type="hidden" id="edit-original-filename" name="originalFilename">
+          <div class="form-group">
+            <label for="edit-title">Title:</label>
+            <input type="text" id="edit-title" name="title" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-summary">Summary:</label>
+            <input type="text" id="edit-summary" name="summary" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-tags">Tags (comma separated):</label>
+            <input type="text" id="edit-tags" name="tags">
+          </div>
+          <div class="form-group">
+            <label for="edit-date">Date:</label>
+            <input type="date" id="edit-date" name="date" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-content">Content (Markdown):</label>
+            <textarea id="edit-content" name="content" required></textarea>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn primary">💾 Update Post</button>
+            <button type="button" class="btn" onclick="cancelEdit()">❌ Cancel</button>
+          </div>
+        </form>
+        <div id="edit-status"></div>
       </div>
     </div>
 
@@ -208,6 +244,7 @@
         if (response.ok) {
           const data = await response.json();
           const posts = data.posts || [];
+          currentPosts = posts; // Store for editing
           
           if (posts.length === 0) {
             statusDiv.innerHTML = '<div class="status info">No posts found. Create your first post!</div>';
@@ -224,6 +261,10 @@
                 📅 ${post.date} | 🏷️ ${post.tags.join(', ')} | 📝 ${post.content.length} chars
               </div>
               <div class="post-summary">${post.summary}</div>
+              <div style="margin-top: 10px;">
+                <button class="btn" onclick="editPost('${post.slug}')">✏️ Edit</button>
+                <button class="btn" onclick="deletePost('${post.slug}')" style="border-color: #ef4444; color: #ef4444;">🗑️ Delete</button>
+              </div>
             </div>
           `).join('');
           
@@ -339,6 +380,92 @@
           ${test.data ? `<pre style="margin-top: 10px; font-size: 0.8em;">${JSON.stringify(test.data, null, 2)}</pre>` : ''}
         </div>
       `).join('');
+    }
+
+    // Edit Post
+    let currentPosts = [];
+
+    async function editPost(slug) {
+      const post = currentPosts.find(p => p.slug === slug);
+      if (!post) {
+        alert('Post not found');
+        return;
+      }
+
+      // Fill edit form
+      document.getElementById('edit-original-filename').value = slug + '.mdx';
+      document.getElementById('edit-title').value = post.title;
+      document.getElementById('edit-summary').value = post.summary;
+      document.getElementById('edit-tags').value = post.tags.join(', ');
+      document.getElementById('edit-date').value = post.date;
+      document.getElementById('edit-content').value = post.content;
+
+      // Show edit tab
+      document.getElementById('edit-tab-button').style.display = 'inline-block';
+      showTab('edit');
+    }
+
+    async function updatePost(event) {
+      event.preventDefault();
+      
+      const statusDiv = document.getElementById('edit-status');
+      const form = event.target;
+      const formData = new FormData(form);
+      
+      const postData = {
+        originalFilename: formData.get('originalFilename'),
+        title: formData.get('title'),
+        summary: formData.get('summary'),
+        tags: formData.get('tags').split(',').map(tag => tag.trim()).filter(tag => tag),
+        content: formData.get('content'),
+        date: formData.get('date')
+      };
+      
+      statusDiv.innerHTML = '<div class="status info">Updating post...</div>';
+      
+      try {
+        const response = await fetch('/api/posts', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(postData)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          statusDiv.innerHTML = `<div class="status success">✅ Post updated successfully! File: ${result.filename}</div>`;
+          
+          // Refresh posts and go back to posts tab
+          setTimeout(() => {
+            showTab('posts');
+            loadPosts();
+          }, 2000);
+        } else {
+          statusDiv.innerHTML = `<div class="status error">❌ Failed to update post: ${result.error}</div>`;
+        }
+      } catch (error) {
+        statusDiv.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+      }
+    }
+
+    function cancelEdit() {
+      document.getElementById('edit-tab-button').style.display = 'none';
+      showTab('posts');
+    }
+
+    async function deletePost(slug) {
+      if (!confirm(`Are you sure you want to delete the post "${slug}"?`)) {
+        return;
+      }
+
+      try {
+        // For now, we'll show an info message since DELETE endpoint isn't implemented
+        alert('Delete functionality will be implemented soon. For now, manually delete the file from data/blog/ folder.');
+      } catch (error) {
+        alert(`Error: ${error.message}`);
+      }
     }
 
     // Initialize
